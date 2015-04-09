@@ -1,0 +1,115 @@
+Ground Rules
+============
+
+ * stdlib is currently at 4.x
+ * 5.x release will
+   - gain puppet4 support proper
+   - deprecate puppet 3x behaviour
+   - remove 2.7 support
+ * 6.x release is scheduled to remove puppet 3 support
+ * executable behaviour should stay the same when switching between puppet 3 and puppet 4
+ * add liberal amounts of warnings on puppet 3 behaviour when running on puppet 4
+   - use puppet 4 function API dispatch matching to wrap old functionality
+
+Easy
+====
+
+Deprecations
+------------
+
+ * any2array
+ * bool2str
+ * concat
+ * defined_with_params
+ * delete
+ * delete_at
+ * delete_values
+ * difference
+ * get_param
+ * grep
+ * has_interface_with, has_ip_address, has_ip_network: will need docs on how to achieve the same thing in puppet4
+ * is_* for types
+ * is_function_available
+ * join_keys_to_values
+ * member
+ * merge
+ * num2bool
+ * pick: replace by pick_default
+ * prefix
+ * range
+ * reject
+ * squeeze: no usage on github found
+ * suffix
+ * swapcase: no usage on github found
+ * validate_* for types
+ * values_at: describe alternate syntax in puppet 4
+
+Straight ports
+--------------
+
+ * base64: semi-done: https://github.com/puppetlabs/puppetlabs-stdlib/compare/master...DavidS:modules-1882-base64-cleanup
+ * count
+ * dirname
+ * flatten
+ * has_key
+ * is_domain_name
+ * is_ip_address: maybe split into ipv4, ipv6
+ * is_mac_address
+ * keys
+ * loadyaml, parseyaml, parsejson
+ * pick_default: rename to pick
+ * reverse
+ * str2saltedsha512
+ * strftime
+ * validate_absolute_path
+ * values
+
+Minor changes
+-------------
+
+ * abs: signature change
+ * floor: signature change, add ceiling() to match
+ * string functions: need to deprecate array handling, tighten up signature
+   - camelcase
+   - capitalize
+   - chomp
+   - downcase
+   - lstrip
+   - rstrip
+   - strip
+   - upcase
+ * join: fixup error messages
+ * loadjson: implement to match loadyaml/parseyaml
+ * size: add capability to size Int/float ranges
+ * sort: accept block as comparator
+ * shuffle: needs to become deterministic
+ * str2bool: enhance docs with pointers to type system, typed facts; do not deprecate due to high usage count
+ * uriescape: remove iteration, type safety
+ * validate_ipv4_address, validate_ipv6_address: align with is_ip_address's replacement; remove iteration
+
+Medium
+======
+
+ * bool2num: deprecate after changing yumrepo to accept true bools (in addition to 0/1)
+ * delete_undef_values: maybe rewrite
+ * empty: fix
+ * fqdn_rotate: split out rotate(), tighten signature, drop ruby 1.8 support (i.e. require Random class)
+ * hash: move to puppet core as Hash.value_of
+ * intersection: extend to hashes
+ * max, min: clean up to remove type conversion
+ * time: redesign TZ handling
+ * validate_augeas: hand-off to augeas
+ * validate_cmd: clean up '%' handling, implement cmd array as alternative to parsing
+ * zip: remove flatten parameter
+
+Hard
+====
+
+ * deep_merge: rewrite based on deep_merge gem
+ * ensure_packages: rewrite
+ * ensure_resources: rewrite
+ * get_module_path: ??
+ * get_var: needs fix in language, then deprecate
+ * union: rewrite to use puppet semantics
+ * unique: rewrite to use puppet semantics, drop string unification
+
